@@ -1,21 +1,21 @@
-"""TheMovieDB API client implementation."""
+"""TheMovieDB API client."""
 
 import time
 from typing import Dict, Optional
 
 import requests
-from requests.exceptions import ConnectionError, RequestException, Timeout
 
 from app.config import Config
 from app.domain.exceptions import MovieAPIConnectionError, MovieAPIResponseError
 
 
 class TMDBClient:
-    """HTTP client for TheMovieDB API."""
+    """Client for TheMovieDB API."""
 
     BASE_URL = "https://api.themoviedb.org/3"
     MAX_RETRIES = 3
     RETRY_DELAY = 1  # seconds
+    TIMEOUT = 10
 
     def __init__(self, api_key: str = None):
         """Initialize the client with API key."""
@@ -23,56 +23,54 @@ class TMDBClient:
         if not self.api_key:
             raise ValueError("TMDB_API_KEY is required")
 
-    def _get(self, endpoint: str, params: Optional[Dict] = None) -> Dict:
-        """Make a GET request to TheMovieDB API with retries.
+    def _get(self, endpoint: str, params: Dict = None) -> Optional[Dict]:
+        """Make a GET request to TheMovieDB API.
 
         Args:
-            endpoint: API endpoint (e.g., /movie/popular)
-            params: Optional query parameters
+            endpoint: API endpoint
+            params: Query parameters
 
         Returns:
-            JSON response from the API
+            Response data as dictionary or None if resource not found
 
         Raises:
-            MovieAPIConnectionError: If there are connection issues
-            MovieAPIResponseError: If the API returns an error response
+            MovieAPIConnectionError: If the API request fails due to connection issues
+            MovieAPIResponseError: If the API request fails due to response errors
         """
-        url = f"{self.BASE_URL}{endpoint}"
-        params = params or {}
+        if params is None:
+            params = {}
+
         params["api_key"] = self.api_key
+        url = f"{self.BASE_URL}{endpoint}"
 
         for attempt in range(self.MAX_RETRIES):
             try:
-                response = requests.get(url, params=params, timeout=10)
+                response = requests.get(url, params=params, timeout=self.TIMEOUT)
+
+                if response.status_code == 404:
+                    return None
+
                 response.raise_for_status()
                 return response.json()
 
-            except Timeout:
+            except requests.Timeout:
                 if attempt == self.MAX_RETRIES - 1:
                     raise MovieAPIConnectionError("Timeout connecting to TheMovieDB API")
                 time.sleep(self.RETRY_DELAY)
 
-            except ConnectionError:
+            except requests.ConnectionError:
                 if attempt == self.MAX_RETRIES - 1:
                     raise MovieAPIConnectionError("Failed to connect to TheMovieDB API")
                 time.sleep(self.RETRY_DELAY)
 
             except requests.HTTPError as e:
-                if e.response.status_code >= 500 and attempt < self.MAX_RETRIES - 1:
+                if response.status_code >= 500:
+                    if attempt == self.MAX_RETRIES - 1:
+                        raise MovieAPIConnectionError(f"TheMovieDB API server error: {response.status_code}")
                     time.sleep(self.RETRY_DELAY)
-                    continue
+                else:
+                    error_message = response.json().get("status_message", str(e))
+                    raise MovieAPIResponseError(error_message)
 
-                error_msg = f"TheMovieDB API error: {e.response.status_code}"
-                try:
-                    error_data = e.response.json()
-                    if "status_message" in error_data:
-                        error_msg = f"{error_msg} - {error_data['status_message']}"
-                except ValueError:
-                    pass
-
-                raise MovieAPIResponseError(error_msg)
-
-            except RequestException as e:
-                if attempt == self.MAX_RETRIES - 1:
-                    raise MovieAPIConnectionError(f"Request failed: {str(e)}")
-                time.sleep(self.RETRY_DELAY)
+            except Exception as e:
+                raise MovieAPIConnectionError(f"Unexpected error: {str(e)}")

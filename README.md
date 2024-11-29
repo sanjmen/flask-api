@@ -149,8 +149,7 @@ flask-api/
 
 ### 3. API Endpoints Implementation
 - [x] GET /api/movies/popular
-- [ ] GET /api/movies/{id}
-- [ ] GET /api/movies/search
+- [x] GET /api/movies/{id}
 - [ ] Favorites Management
   - [ ] Database models and repositories
   - [ ] GET /api/movies/favorites
@@ -202,6 +201,7 @@ See [API.md](API.md) for detailed endpoint documentation.
 
 Quick endpoint overview:
 - `GET /api/movies/popular` - Get popular movies
+- `GET /api/movies/{id}` - Get movie details
 - `GET /api/movies/favorites` - Get user's favorite movies
 - `POST /api/movies/favorites` - Add movie to favorites
 - `DELETE /api/movies/favorites/{id}` - Remove movie from favorites

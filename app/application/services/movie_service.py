@@ -25,3 +25,14 @@ class MovieService:
         """
         movies = self._repository.get_popular(page=page)
         return {"movies": movies, "page": page}
+
+    def get_movie_details(self, movie_id: int) -> Dict:
+        """Get detailed information for a specific movie.
+
+        Args:
+            movie_id: The ID of the movie to retrieve
+
+        Returns:
+            Dictionary containing movie details
+        """
+        return self._repository.get_movie_details(movie_id=movie_id)

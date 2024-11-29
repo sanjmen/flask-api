@@ -24,3 +24,20 @@ class TMDBRepository(MovieRepository):
         """
         response = self.client._get("/movie/popular", params={"page": page})
         return response.get("results", [])
+
+    def get_movie_details(self, movie_id: int) -> Dict:
+        """Get detailed information for a specific movie from TheMovieDB.
+
+        Args:
+            movie_id: The ID of the movie to retrieve
+
+        Returns:
+            Dictionary containing movie details or None if not found
+        """
+        try:
+            response = self.client._get(f"/movie/{movie_id}")
+            return response
+        except Exception as e:
+            if "404" in str(e):
+                return None
+            raise

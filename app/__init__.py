@@ -6,7 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.application.controllers.home_controller import create_home_blueprint
 from app.application.controllers.movie_controller import create_movie_blueprint
+from app.application.services.movie_service import MovieService
 from app.infrastructure.api.error_handlers import register_error_handlers
+from app.infrastructure.repositories.tmdb_repository import TMDBRepository
 
 load_dotenv()
 
@@ -22,7 +24,12 @@ def create_app():
 
     register_error_handlers(app)
 
+    # Register blueprints
     app.register_blueprint(create_home_blueprint())
-    app.register_blueprint(create_movie_blueprint())
+
+    # Create and register movie service
+    movie_repository = TMDBRepository()
+    app.movie_service = MovieService(movie_repository=movie_repository)
+    app.register_blueprint(create_movie_blueprint(), url_prefix="/api/movies")
 
     return app

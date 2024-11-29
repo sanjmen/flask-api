@@ -54,3 +54,31 @@ def test_get_popular_movies_invalid_page(client):
         data = response.get_json()
         assert "error" in data
         assert data["error"] == expected_error
+
+
+@pytest.mark.integration
+def test_get_movie_details_success(client, mock_tmdb_response):
+    """Test getting movie details successfully."""
+    movie_id = 123
+    expected_response = {"id": movie_id, "title": "Test Movie", "overview": "A great test movie"}
+    mock_tmdb_response(f"/movie/{movie_id}", expected_response)
+
+    response = client.get(f"/api/movies/{movie_id}")
+
+    assert response.status_code == 200
+    assert response.json == expected_response
+
+
+@pytest.mark.integration
+def test_get_movie_details_not_found(client, mock_tmdb_response):
+    """Test getting movie details with invalid ID."""
+    movie_id = 999999
+    mock_tmdb_response(f"/movie/{movie_id}", {"status_code": 404, "status_message": "Not Found"}, status=404)
+
+    response = client.get(f"/api/movies/{movie_id}")
+
+    assert response.status_code == 404
+    assert response.content_type == "application/json"
+    data = response.get_json()
+    assert "error" in data
+    assert data["error"] == "Movie not found"
