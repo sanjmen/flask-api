@@ -50,3 +50,20 @@ def client(app):
 def runner(app):
     """Create a test runner for the app's Click commands."""
     return app.test_cli_runner()
+
+
+@pytest.fixture
+def mock_tmdb_response(mocker):
+    """Mock TMDB API responses for integration tests."""
+
+    def _mock_response(endpoint, response_data, status=200):
+
+        def mock_get(*args, **kwargs):
+            mock_resp = mocker.Mock()
+            mock_resp.status_code = status
+            mock_resp.json.return_value = response_data
+            return mock_resp
+
+        mocker.patch("requests.get", side_effect=mock_get)
+
+    return _mock_response

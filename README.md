@@ -148,16 +148,15 @@ flask-api/
 - [x] Integration tests
 
 ### 3. API Endpoints Implementation
-- [ ] GET /api/movies/popular
-  - [ ] Basic implementation
-  - [ ] Error handling
-  - [ ] Integration tests
-- [ ] Favorites Management
-  - [ ] Database models and repositories
-  - [ ] GET /api/movies/favorites
-  - [ ] POST /api/movies/favorites
-  - [ ] DELETE /api/movies/favorites/{id}
-  - [ ] Admin endpoint for user favorites
+- [x] GET /api/movies/popular
+- [x] GET /api/movies/{id}
+- [x] Favorites Management
+  - [x] GET /api/users/{user_id}/favorites
+  - [x] POST /api/users/{user_id}/favorites
+  - [x] DELETE /api/users/{user_id}/favorites/{id}
+  - [x] Database models and repositories
+  - [x] Admin endpoint for user favorites
+  - [x] DELETE /api/admin/users/{userId}/favorites
 - [ ] Movie Ratings
   - [ ] Database models and repositories
   - [ ] POST /api/movies/ratings
@@ -203,9 +202,10 @@ See [API.md](API.md) for detailed endpoint documentation.
 
 Quick endpoint overview:
 - `GET /api/movies/popular` - Get popular movies
-- `GET /api/movies/favorites` - Get user's favorite movies
-- `POST /api/movies/favorites` - Add movie to favorites
-- `DELETE /api/movies/favorites/{id}` - Remove movie from favorites
+- `GET /api/movies/{id}` - Get movie details
+- `GET /api/users/{user_id}/favorites` - Get user's favorite movies
+- `POST /api/users/{user_id}/favorites` - Add movie to favorites
+- `DELETE /api/users/{user_id}/favorites/{id}` - Remove movie from favorites
 - `POST /api/movies/ratings` - Rate a movie
 - `PUT /api/movies/ratings/{id}` - Update movie rating
 

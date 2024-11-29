@@ -17,3 +17,9 @@ class MovieAPIResponseError(MovieAPIError):
     """Raised when the movie API returns an error response."""
 
     pass
+
+
+class TMDBError(Exception):
+    """Raised when there is an error with TheMovieDB API."""
+
+    pass

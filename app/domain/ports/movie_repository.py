@@ -18,3 +18,15 @@ class MovieRepository(ABC):
             List of movie dictionaries
         """
         pass
+
+    @abstractmethod
+    def get_movie_details(self, movie_id: int) -> Dict:
+        """Get detailed information for a specific movie.
+
+        Args:
+            movie_id: The ID of the movie to retrieve
+
+        Returns:
+            Dictionary containing movie details
+        """
+        pass
