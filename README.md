@@ -151,10 +151,10 @@ flask-api/
 - [x] GET /api/movies/popular
 - [x] GET /api/movies/{id}
 - [ ] Favorites Management
+  - [x] GET /api/movies/favorites
+  - [x] POST /api/movies/favorites
+  - [x] DELETE /api/movies/favorites/{id}
   - [ ] Database models and repositories
-  - [ ] GET /api/movies/favorites
-  - [ ] POST /api/movies/favorites
-  - [ ] DELETE /api/movies/favorites/{id}
   - [ ] Admin endpoint for user favorites
 - [ ] Movie Ratings
   - [ ] Database models and repositories

@@ -48,13 +48,24 @@ def test_get_popular_movies_pagination(tmdb_repository):
     page1_movies = tmdb_repository.get_popular(page=1)
     page2_movies = tmdb_repository.get_popular(page=2)
 
+    # Check that we got movies in both pages
     assert len(page1_movies) > 0
     assert len(page2_movies) > 0
+
+    # Check that pages are not identical
     assert page1_movies != page2_movies
 
+    # Check that most movies are different between pages
+    # Some overlap is possible due to movie popularity changes
     page1_ids = {movie["id"] for movie in page1_movies}
     page2_ids = {movie["id"] for movie in page2_movies}
-    assert not page1_ids.intersection(page2_ids)
+    intersection = page1_ids.intersection(page2_ids)
+
+    # Allow for some overlap (no more than 20% of movies)
+    max_allowed_overlap = len(page1_movies) * 0.2
+    assert (
+        len(intersection) <= max_allowed_overlap
+    ), f"Too many movies appear in both pages: {len(intersection)} movies"
 
 
 @pytest.mark.integration
