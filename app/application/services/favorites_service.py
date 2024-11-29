@@ -6,12 +6,12 @@ from typing import Dict, List, Set
 @dataclass
 class Favorite:
     id: int
-    movie_id: str
+    movie_id: int
     created_at: datetime
 
 
 class FavoritesService:
-    _favorites: Set[str] = set()  # In-memory storage for favorites
+    _favorites: Set[int] = set()  # In-memory storage for favorites
     _user_favorites: Dict[int, List[Favorite]] = {}  # User-specific favorites
     _next_id: int = 1
     _movie_service = None
@@ -22,7 +22,7 @@ class FavoritesService:
         cls._movie_service = movie_service
 
     @classmethod
-    def add_favorite(cls, movie_id: str) -> bool:
+    def add_favorite(cls, movie_id: int) -> bool:
         """Add a movie to favorites"""
         if movie_id in cls._favorites:
             return False
@@ -30,7 +30,7 @@ class FavoritesService:
         return True
 
     @classmethod
-    def remove_favorite(cls, movie_id: str) -> bool:
+    def remove_favorite(cls, movie_id: int) -> bool:
         """Remove a movie from favorites"""
         if movie_id not in cls._favorites:
             return False
@@ -38,12 +38,12 @@ class FavoritesService:
         return True
 
     @classmethod
-    def get_favorites(cls) -> List[str]:
+    def get_favorites(cls) -> List[int]:
         """Get all favorite movies"""
         return list(cls._favorites)
 
     @classmethod
-    def is_favorite(cls, movie_id: str) -> bool:
+    def is_favorite(cls, movie_id: int) -> bool:
         """Check if a movie is in favorites"""
         return movie_id in cls._favorites
 
@@ -71,7 +71,7 @@ class FavoritesService:
         return sorted(result, key=lambda x: x["movie"].get("release_date", ""), reverse=True)
 
     @classmethod
-    def add_user_favorite(cls, user_id: int, movie_id: str) -> Favorite:
+    def add_user_favorite(cls, user_id: int, movie_id: int) -> Favorite:
         """Add a movie to user's favorites"""
         if user_id not in cls._user_favorites:
             cls._user_favorites[user_id] = []

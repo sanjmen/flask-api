@@ -89,8 +89,8 @@ def test_remove_favorite(client):
 def test_admin_delete_user_favorites(client):
     """Test admin endpoint to delete all favorites for a user."""
     # Add some favorites first
-    FavoritesService.add_user_favorite(1, "tt0111161")
-    FavoritesService.add_user_favorite(1, "tt0068646")
+    FavoritesService.add_user_favorite(1, 111161)
+    FavoritesService.add_user_favorite(1, 68646)
     favorites = FavoritesService.get_user_favorites(1)
     assert len(favorites) == 2
 
