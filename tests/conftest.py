@@ -1,8 +1,9 @@
 """Test configuration and fixtures."""
 
 import pytest
+from dotenv import load_dotenv
 
-from app import create_app
+load_dotenv()
 
 
 def pytest_addoption(parser):
@@ -27,13 +28,16 @@ def pytest_collection_modifyitems(config, items):
 @pytest.fixture
 def app():
     """Create and configure a new app instance for each test."""
+    from app import create_app
+
     app = create_app()
     app.config.update(
         {
             "TESTING": True,
         }
     )
-    yield app
+
+    return app
 
 
 @pytest.fixture

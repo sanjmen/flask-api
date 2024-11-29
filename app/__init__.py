@@ -1,10 +1,13 @@
 """Flask application factory."""
 
+from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from app.application.controllers.home_controller import create_home_blueprint
 from app.infrastructure.api.error_handlers import register_error_handlers
+
+load_dotenv()
 
 db = SQLAlchemy()
 
@@ -18,7 +21,6 @@ def create_app():
 
     register_error_handlers(app)
 
-    # Register blueprints
     app.register_blueprint(create_home_blueprint())
 
     return app

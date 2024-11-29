@@ -142,10 +142,10 @@ flask-api/
   - [x] First endpoint test
 
 ### 2. TheMovieDB Integration
-- [ ] HTTP client implementation
-- [ ] Adapter in hexagonal architecture
-- [ ] Error handling and retries
-- [ ] Integration tests
+- [x] HTTP client implementation
+- [x] Adapter in hexagonal architecture
+- [x] Error handling and retries
+- [x] Integration tests
 
 ### 3. API Endpoints Implementation
 - [ ] GET /api/movies/popular
