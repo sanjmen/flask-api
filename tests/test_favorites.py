@@ -84,3 +84,19 @@ def test_remove_favorite(client):
     # Test removing already removed favorite
     response = client.delete("/api/movies/favorites/1")
     assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+def test_admin_delete_user_favorites(client):
+    """Test admin endpoint to delete all favorites for a user."""
+    # Add some favorites first
+    FavoritesService._favorites.clear()
+    FavoritesService.add_favorite("123")
+    FavoritesService.add_favorite("456")
+    assert len(FavoritesService.get_favorites()) == 2
+
+    # Delete all favorites for user 1
+    response = client.delete("/api/admin/users/1/favorites")
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    # Verify favorites were cleared
+    assert len(FavoritesService.get_favorites()) == 0

@@ -155,7 +155,8 @@ flask-api/
   - [x] POST /api/movies/favorites
   - [x] DELETE /api/movies/favorites/{id}
   - [ ] Database models and repositories
-  - [ ] Admin endpoint for user favorites
+  - [x] Admin endpoint for user favorites
+  - [x] DELETE /api/admin/users/{userId}/favorites
 - [ ] Movie Ratings
   - [ ] Database models and repositories
   - [ ] POST /api/movies/ratings
