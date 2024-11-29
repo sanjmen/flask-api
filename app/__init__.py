@@ -8,6 +8,7 @@ from app.application.controllers.admin_controller import admin_bp
 from app.application.controllers.favorites_controller import favorites_bp
 from app.application.controllers.home_controller import create_home_blueprint
 from app.application.controllers.movie_controller import create_movie_blueprint
+from app.application.controllers.user_favorites_controller import user_favorites_bp
 from app.application.services.movie_service import MovieService
 from app.infrastructure.api.error_handlers import register_error_handlers
 from app.infrastructure.repositories.tmdb_repository import TMDBRepository
@@ -30,6 +31,7 @@ def create_app():
     app.register_blueprint(create_home_blueprint())
     app.register_blueprint(favorites_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(user_favorites_bp)
 
     # Create and register movie service
     movie_repository = TMDBRepository()

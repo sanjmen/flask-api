@@ -89,14 +89,15 @@ def test_remove_favorite(client):
 def test_admin_delete_user_favorites(client):
     """Test admin endpoint to delete all favorites for a user."""
     # Add some favorites first
-    FavoritesService._favorites.clear()
-    FavoritesService.add_favorite("123")
-    FavoritesService.add_favorite("456")
-    assert len(FavoritesService.get_favorites()) == 2
+    FavoritesService.add_user_favorite(1, "tt0111161")
+    FavoritesService.add_user_favorite(1, "tt0068646")
+    favorites = FavoritesService.get_user_favorites(1)
+    assert len(favorites) == 2
 
     # Delete all favorites for user 1
     response = client.delete("/api/admin/users/1/favorites")
     assert response.status_code == HTTPStatus.NO_CONTENT
 
     # Verify favorites were cleared
-    assert len(FavoritesService.get_favorites()) == 0
+    favorites = FavoritesService.get_user_favorites(1)
+    assert len(favorites) == 0

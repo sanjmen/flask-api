@@ -56,7 +56,7 @@ Notes:
 
 #### Add Movie to Favorites
 ```http
-POST /api/movies/favorites
+POST /api/users/{user_id}/favorites
 ```
 Authentication: Required (Bearer token)
 
@@ -78,7 +78,7 @@ Response (201 Created):
 
 #### Remove Movie from Favorites
 ```http
-DELETE /api/movies/favorites/{id}
+DELETE /api/users/{user_id}/favorites/{id}
 ```
 Authentication: Required (Bearer token)
 
@@ -86,7 +86,7 @@ Response (204 No Content)
 
 #### Get User's Favorite Movies
 ```http
-GET /api/movies/favorites
+GET /api/users/{user_id}/favorites
 ```
 Authentication: Required (Bearer token)
 
