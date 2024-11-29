@@ -148,10 +148,9 @@ flask-api/
 - [x] Integration tests
 
 ### 3. API Endpoints Implementation
-- [ ] GET /api/movies/popular
-  - [ ] Basic implementation
-  - [ ] Error handling
-  - [ ] Integration tests
+- [x] GET /api/movies/popular
+- [ ] GET /api/movies/{id}
+- [ ] GET /api/movies/search
 - [ ] Favorites Management
   - [ ] Database models and repositories
   - [ ] GET /api/movies/favorites
