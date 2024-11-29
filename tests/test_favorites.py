@@ -7,6 +7,11 @@ from app import create_app
 from app.application.services.favorites_service import FavoritesService
 
 
+class MockMovieService:
+    def get_movie_details(self, movie_id):
+        return {"id": movie_id, "title": f"Test Movie {movie_id}", "release_date": "2023-01-01"}
+
+
 @pytest.fixture
 def app():
     """Create and configure a new app instance for each test."""
@@ -16,6 +21,8 @@ def app():
             "TESTING": True,
         }
     )
+    # Initialize FavoritesService with mock movie service
+    FavoritesService.initialize(MockMovieService())
     yield app
 
 
